@@ -1,12 +1,14 @@
-import PyPDF2
+import fitz  # PyMuPDF
 import docx
 
 def read_pdf(file):
-    pdf_reader = PyPDF2.PdfFileReader(file)
+    pdf_document = fitz.open(file)
     text = ""
-    for page_num in range(pdf_reader.numPages):
-        page = pdf_reader.getPage(page_num)
-        text += page.extract_text()
+    
+    for page_num in range(len(pdf_document)):
+        page = pdf_document.load_page(page_num)
+        text += page.get_text()
+    
     return text
 
 def read_docx(file):
