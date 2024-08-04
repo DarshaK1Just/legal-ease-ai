@@ -1,14 +1,15 @@
-import fitz  # PyMuPDF
+from pdfreader import PDFDocument
 import docx
 
 def read_pdf(file):
-    pdf_document = fitz.open(file)
     text = ""
-    
-    for page_num in range(len(pdf_document)):
-        page = pdf_document.load_page(page_num)
-        text += page.get_text()
-    
+    try:
+        with open(file, 'rb') as f:
+            pdf = PDFDocument(f)
+            for page in pdf.pages:
+                text += page.text()
+    except Exception as e:
+        print(f"Error reading PDF: {e}")
     return text
 
 def read_docx(file):
